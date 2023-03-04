@@ -1,7 +1,6 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 const ButtonStyled = ({count, onPress}) => {
-  // const onPress = () => setCount(prevCount => prevCount + 1);
 
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
@@ -19,6 +18,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: 350,
     height: 70,
+    marginTop: 20
   },
   text: {
     fontWeight: 700,

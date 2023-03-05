@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 const ButtonStyled = ({count, onPress}) => {
 
@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: 350,
     height: 70,
-    marginTop: 20
+    marginBottom: 35,
+    marginTop: 25
   },
   text: {
     fontWeight: 700,

@@ -1,9 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import ButtonStyled from './components/ButtonStyled';
-import {  Divider, useTheme } from '@rneui/themed';
-
+import Carousel from 'react-native-snap-carousel';
 
 export default function App() {
   const [count, setCount] = useState(1);
@@ -22,7 +21,6 @@ export default function App() {
       name: 'ПОДЪЕМЫ НА СКАМЬЕ'
     }
   ]
-  const arr = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
 
   const onPress = () => {
     if(count < 3) {
@@ -30,55 +28,72 @@ export default function App() {
     }
   };
 
+
+  const renderImage = ({ item, index }) => {
+    const isActive = index === count;
+    return (
+      <View style={isActive && styles.activeItem}>
+        <Image 
+        source={item.img} 
+        style={styles.image} 
+        alt="slider img"/>
+      </View>
+      
+    );
+  };
+
+  const renderItem = ({ item, index }) => {
+    return (
+      <View style={styles.verticleLine}>
+        <Text style={styles.scrollNum}>{item}</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
+      
       <Text style={styles.trisestText}>ТРИСЕТ</Text>
       <Text style={styles.numText}>{count}/3</Text>
       <Text style={styles.secondaryText}>ПОДХОД</Text>
       <Text style={styles.mainText}>{exercises[count-1].name}</Text>
 
-      <Image 
-        source={exercises[count-1].img} 
-        style={styles.image} 
-        alt="slider img"/>
+      <Carousel
+        data={exercises}
+        renderItem={renderImage}
+        sliderWidth={500}
+        itemWidth={100}
+        inactiveSlideOpacity={0.5}
+        inactiveSlideScale={0.8}
+        activeSlideOffset={20}
+        onSnapToItem={(index) => setCount(index+1)}
+        firstItem={count-1}
+      />
       
       <Text style={styles.mainText}>УКАЖИТЕ ВЕС С КОТОРЫМ ВЫ РАБОТАЛИ</Text>
 
-      <View style={styles.scrollbar}>
-        <ScrollView horizontal={true} >
-        {arr.map(item => {
-          return (
-            <>
-              <Divider orientation="vertical" />
-                <Text style={styles.scrollNum}>{item}</Text>
-              <Divider orientation="vertical" /> 
-            </>
-          )
-        })}
-        </ScrollView>
-      </View>
-      
+      <Carousel
+        data={[...Array(16).keys()]}
+        renderItem={renderItem}
+        sliderWidth={500}
+        itemWidth={100}
+        inactiveSlideOpacity={0.5}
+        inactiveSlideScale={0.8}
+      />
 
       <Text style={styles.mainText}>УКАЖИТЕ КОЛИЧЕСТВО ПОВТОРЕНИЙ</Text>
 
-      <View style={styles.scrollbar}>
-        <ScrollView horizontal={true}>
-          {arr.map(item => {
-              return (
-                <>
-                  <Divider orientation="vertical" />
-                    <Text style={styles.scrollNum}>{item}</Text>
-                  <Divider orientation="vertical" /> 
-                </>
-              )
-            })}
-          </ScrollView>
-      </View>
-      
+      <Carousel
+        data={[...Array(16).keys()]}
+        renderItem={renderItem}
+        sliderWidth={500}
+        itemWidth={100}
+        inactiveSlideOpacity={0.5}
+        inactiveSlideScale={0.8}
+      />
 
       <ButtonStyled count={count} onPress={onPress}/>
   
-
       <StatusBar style="auto" />
     </View>
     
@@ -90,19 +105,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
     alignItems: 'center',
-    // justifyContent: 'space-between',
   },
-  // setContainer: {
-  //   height: 40,
-  //   flex: 1,
-  //   alignItems: 'center',
-  // },
   secondaryText: {
     color: 'white',
     fontWeight: '700',
     fontSize: 12,
-    // marginTop: 70,
-    // marginBottom: 30
   },
   mainText: {
     color: 'white',
@@ -131,16 +138,23 @@ const styles = StyleSheet.create({
   scrollNum: {
     color: 'white',
     fontWeight: 700,
-    fontSize: 40,
+    fontSize: 45,
     marginHorizontal: 30
   },
   verticleLine: {
-    height: '1%',
-    width: 1,
-    backgroundColor: 'whitesmoke',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderLeftWidth: 1,
+    borderColor: 'gray',
+    borderStyle: 'solid'
   },
   scrollbar: {
     height: 50,
     marginBottom: 30
+  },
+  itemText: {
+    fontSize: 22,
+    color: 'blue'
   }
 });
